@@ -21,13 +21,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // API Routes for Users
-Route::prefix('api')->group(function () {
-    // GET /api/users - Listar todos los usuarios
-    Route::get('/users', [UserController::class, 'index']);
-    
-    // GET /api/users/{id}/tasks - Listar todas las tareas de un usuario específico
-    Route::get('/users/{id}/tasks', [UserController::class, 'tasks']);
-    
+// GET /api/users - Listar todos los usuarios (sin autenticación)
+Route::get('/users', [UserController::class, 'index']);
+
+// GET /api/users/{id}/tasks - Listar todas las tareas de un usuario específico (sin autenticación)
+Route::get('/users/{id}/tasks', [UserController::class, 'tasks']);
+
+// Rutas que requieren autenticación por token API
+Route::middleware('api.token')->group(function () {
     // POST /api/tasks - Crear una nueva tarea
     Route::post('/tasks', [TaskController::class, 'store']);
     

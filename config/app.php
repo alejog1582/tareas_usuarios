@@ -107,6 +107,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API Token
+    |--------------------------------------------------------------------------
+    |
+    | This token is used for API authentication. It should be set in your
+    | .env file and kept secure. This token is required for POST, PUT, and
+    | DELETE requests to the API.
+    |
+    */
+
+    'api_token' => env('API_TOKEN'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Maintenance Mode Driver
     |--------------------------------------------------------------------------
     |
