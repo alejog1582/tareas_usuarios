@@ -54,4 +54,36 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
+
+    /**
+     * Get the pending tasks for the user.
+     */
+    public function pendingTasks(): HasMany
+    {
+        return $this->hasMany(Task::class)->where('status', 'pending');
+    }
+
+    /**
+     * Get the in progress tasks for the user.
+     */
+    public function inProgressTasks(): HasMany
+    {
+        return $this->hasMany(Task::class)->where('status', 'in_progress');
+    }
+
+    /**
+     * Get the completed tasks for the user.
+     */
+    public function completedTasks(): HasMany
+    {
+        return $this->hasMany(Task::class)->where('status', 'completed');
+    }
+
+    /**
+     * Get the tasks count for the user.
+     */
+    public function getTasksCountAttribute(): int
+    {
+        return $this->tasks()->count();
+    }
 }
