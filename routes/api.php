@@ -29,6 +29,9 @@ Route::get('/users/{id}/tasks', [UserController::class, 'tasks']);
 
 // Rutas que requieren autenticación por token API
 Route::middleware('api.token')->group(function () {
+    // POST /api/users - Crear un nuevo usuario
+    Route::post('/users', [UserController::class, 'store']);
+    
     // POST /api/tasks - Crear una nueva tarea
     Route::post('/tasks', [TaskController::class, 'store']);
     

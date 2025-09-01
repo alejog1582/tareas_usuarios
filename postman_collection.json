@@ -29,6 +29,40 @@
 					"response": []
 				},
 				{
+					"name": "Crear nuevo usuario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Nuevo Usuario\",\n    \"email\": \"nuevo@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Crea un nuevo usuario con password por defecto (123456)"
+					},
+					"response": []
+				},
+				{
 					"name": "Listar tareas de un usuario",
 					"request": {
 						"method": "GET",
@@ -156,6 +190,69 @@
 		{
 			"name": "Ejemplos de Error",
 			"item": [
+				{
+					"name": "Crear usuario con email duplicado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{api_token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Usuario Duplicado\",\n    \"email\": \"juan@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Ejemplo de creación de usuario con email duplicado para probar validaciones"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear usuario sin token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Usuario Sin Token\",\n    \"email\": \"sin_token@example.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						},
+						"description": "Ejemplo de creación de usuario sin token de autenticación"
+					},
+					"response": []
+				},
 				{
 					"name": "Crear tarea con datos inválidos",
 					"request": {

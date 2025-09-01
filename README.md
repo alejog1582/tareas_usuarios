@@ -125,7 +125,51 @@ http://localhost:8000/api
 }
 ```
 
-#### 2. **GET /api/users/{id}/tasks** - Listar tareas de un usuario
+#### 2. **POST /api/users** - Crear un nuevo usuario
+- **Método:** POST
+- **Autenticación:** Requerida (Bearer Token)
+- **Descripción:** Crea un nuevo usuario con password por defecto (123456)
+
+**Headers requeridos:**
+```
+Authorization: Bearer tareas_usuarios_api_token_2025_secret_key
+Content-Type: application/json
+```
+
+**Body JSON:**
+```json
+{
+    "name": "Nuevo Usuario",
+    "email": "nuevo@example.com"
+}
+```
+
+**Ejemplo de respuesta exitosa (201):**
+```json
+{
+    "success": true,
+    "data": {
+        "id": 3,
+        "name": "Nuevo Usuario",
+        "email": "nuevo@example.com",
+        "created_at": "2025-01-01T12:00:00.000000Z",
+        "updated_at": "2025-01-01T12:00:00.000000Z"
+    },
+    "message": "User created successfully"
+}
+```
+
+**Ejemplo de respuesta de error (422):**
+```json
+{
+    "message": "El email ya está registrado.",
+    "errors": {
+        "email": ["El email ya está registrado."]
+    }
+}
+```
+
+#### 3. **GET /api/users/{id}/tasks** - Listar tareas de un usuario
 - **Método:** GET
 - **Autenticación:** No requerida
 - **Parámetros:** `id` (ID del usuario)
@@ -155,7 +199,7 @@ http://localhost:8000/api
 }
 ```
 
-#### 3. **POST /api/tasks** - Crear una nueva tarea
+#### 4. **POST /api/tasks** - Crear una nueva tarea
 - **Método:** POST
 - **Autenticación:** Requerida (Bearer Token)
 - **Descripción:** Crea una nueva tarea asignada a un usuario
@@ -211,7 +255,7 @@ Content-Type: application/json
 }
 ```
 
-#### 4. **PUT /api/tasks/{id}** - Actualizar una tarea
+#### 5. **PUT /api/tasks/{id}** - Actualizar una tarea
 - **Método:** PUT
 - **Autenticación:** Requerida (Bearer Token)
 - **Parámetros:** `id` (ID de la tarea)
@@ -254,7 +298,7 @@ Content-Type: application/json
 }
 ```
 
-#### 5. **DELETE /api/tasks/{id}** - Eliminar una tarea
+#### 6. **DELETE /api/tasks/{id}** - Eliminar una tarea
 - **Método:** DELETE
 - **Autenticación:** Requerida (Bearer Token)
 - **Parámetros:** `id` (ID de la tarea)
@@ -282,6 +326,10 @@ Authorization: Bearer tareas_usuarios_api_token_2025_secret_key
 ```
 
 ## 📝 Validaciones
+
+### Campos de usuario
+- **name**: Obligatorio, mínimo 2 caracteres, máximo 255 caracteres
+- **email**: Obligatorio, formato de email válido, máximo 255 caracteres, único en la base de datos
 
 ### Campos de tarea
 - **title**: Obligatorio, mínimo 5 caracteres, máximo 255 caracteres
@@ -372,10 +420,10 @@ php artisan config:show app.api_token
 
 ## 📊 Estadísticas del proyecto
 
-- **Total de tests**: 25 tests pasando
-- **Total de assertions**: 137 assertions
+- **Total de tests**: 35 tests pasando
+- **Total de assertions**: 182 assertions
 - **Cobertura**: Creación, lectura, actualización, eliminación, validación, autenticación
-- **Endpoints**: 5 endpoints REST
+- **Endpoints**: 6 endpoints REST
 - **Modelos**: 2 modelos con relaciones Eloquent
 - **Middleware**: 1 middleware de autenticación personalizado
 
@@ -395,6 +443,6 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 
 ## 👨‍💻 Autor
 
-**Alejo García**
+**Alejandro Gonzalez**
 - GitHub: [@alejog1582](https://github.com/alejog1582)
 - Proyecto: [tareas_usuarios](https://github.com/alejog1582/tareas_usuarios)

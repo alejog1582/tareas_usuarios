@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -59,15 +60,39 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created user in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request): JsonResponse
     {
-        // Not implemented for this API
-        return response()->json([
-            'success' => false,
-            'message' => 'Method not implemented'
-        ], 405);
+        try {
+            $validated = $request->validated();
+            
+            // Crear usuario con password por defecto
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => bcrypt('123456') // Password por defecto
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at
+                ],
+                'message' => 'User created successfully'
+            ], 201);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**
