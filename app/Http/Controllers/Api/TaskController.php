@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,16 +28,10 @@ class TaskController extends Controller
     /**
      * Store a newly created task in storage.
      */
-    public function store(Request $request): JsonResponse
+    public function store(StoreTaskRequest $request): JsonResponse
     {
         try {
-            $validated = $request->validate([
-                'title' => 'required|string|min:5|max:255',
-                'description' => 'nullable|string|max:500',
-                'status' => 'required|in:pending,in_progress,completed',
-                'user_id' => 'required|integer|exists:users,id'
-            ]);
-
+            $validated = $request->validated();
             $task = Task::create($validated);
 
             return response()->json([
@@ -44,12 +40,6 @@ class TaskController extends Controller
                 'message' => 'Task created successfully'
             ], 201);
 
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -74,7 +64,7 @@ class TaskController extends Controller
     /**
      * Update the specified task in storage.
      */
-    public function update(Request $request, string $id): JsonResponse
+    public function update(UpdateTaskRequest $request, string $id): JsonResponse
     {
         try {
             $task = Task::find($id);
@@ -86,12 +76,7 @@ class TaskController extends Controller
                 ], 404);
             }
 
-            $validated = $request->validate([
-                'title' => 'sometimes|required|string|min:5|max:255',
-                'description' => 'sometimes|nullable|string|max:500',
-                'status' => 'sometimes|required|in:pending,in_progress,completed'
-            ]);
-
+            $validated = $request->validated();
             $task->update($validated);
 
             return response()->json([
@@ -100,12 +85,6 @@ class TaskController extends Controller
                 'message' => 'Task updated successfully'
             ]);
 
-        } catch (ValidationException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $e->errors()
-            ], 422);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
